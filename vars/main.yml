@@ -3,4 +3,4 @@ organization: syscomiddleware
 image_name: oracle-bpm
 tags:
   - latest
-  - centos-12.2.1-qs
+  - centos-12.1.3-qs
