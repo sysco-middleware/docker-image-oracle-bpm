@@ -1,11 +1,11 @@
 - hosts: 127.0.0.1
   connection: local
   vars_files:
-    - vars/centos.yml
+    - vars/main.yml
   tasks:
     - name: create container
       docker:
-        name: tmp-oracle-database-centos
+        name: tmp-oracle-bpm-centos
         image: "{{ base_image }}"
         command: sleep infinity
         volumes:
@@ -13,11 +13,11 @@
         state: started
 
     - add_host:
-        name: tmp-oracle-database-centos
+        name: tmp-oracle-bpm-centos
         groups: docker
         ansible_connection: docker
 
-- hosts: tmp-oracle-database-centos
+- hosts: tmp-oracle-bpm-centos
   connection: docker
   roles:
     - role: sysco-middleware.oracle-soa
@@ -28,10 +28,10 @@
 - hosts: 127.0.0.1
   connection: local
   vars_files:
-    - vars/centos.yml
+    - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-database-centos {{ organization }}/{{ image_name }}:{{ item }}"
+      command: "docker commit tmp-oracle-bpm-centos {{ organization }}/{{ image_name }}:{{ item }}"
       with_items: "{{ tags }}"
 
     - name: docker push
@@ -39,4 +39,4 @@
       with_items: "{{ tags }}"
 
     - name: docker kill
-      command: "docker kill tmp-oracle-database-centos"
+      command: "docker kill tmp-oracle-bpm-centos"
